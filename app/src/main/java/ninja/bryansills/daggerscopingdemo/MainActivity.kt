@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ninja.bryansills.daggerscopingdemo.ui.theme.DaggerScopingDemoTheme
@@ -45,14 +46,27 @@ fun MyApp() {
     val startRoute = "example"
     NavHost(navController, startDestination = startRoute) {
         composable("example") {
-            val viewModel = hiltViewModel<FirstViewModel>()
+            val viewModel = hiltViewModel<FirstViewModel, FirstViewModel.Factory> {
+                it.create(10, 5)
+            }
             FirstScreen(viewModel) {
                 navController.navigate("second")
             }
         }
-        composable("second") {
-            val viewModel = hiltViewModel<FirstViewModel>()
+        composable("second") { navBackStackEntry ->
+            val count = 100 // imagine getting this from navBackStackEntry
+            val viewModel = hiltViewModel<FirstViewModel, FirstViewModel.Factory> {
+                it.create(count, 20)
+            }
             SecondScreen(viewModel)
+        }
+        dialog("firstDialog") {
+            FirstDialog {
+                navController.navigate("secondDialog")
+            }
+        }
+        dialog("secondDialog") {
+            SecondDialog()
         }
     }
 }
