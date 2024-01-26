@@ -8,12 +8,16 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SecondDialog() {
+fun SecondDialog(otherViewModel: OtherViewModel) {
+    val uiState by otherViewModel.uiState.collectAsState(initial = 0 to true)
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()
@@ -22,7 +26,14 @@ fun SecondDialog() {
             .height(200.dp)
             .width(200.dp)
         ) {
-            Text("This is the first dialog")
+            Text("Count: ${uiState.first}")
+            Text("Is Even: ${uiState.second}")
+
+            Button(onClick = otherViewModel::increment) {
+                Text("Increment")
+            }
+
+            Text("This is the second dialog")
         }
     }
 }

@@ -12,12 +12,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ninja.bryansills.daggerscopingdemo.ui.theme.DaggerScopingDemoTheme
@@ -50,7 +52,7 @@ fun MyApp() {
                 it.create(10, 5)
             }
             FirstScreen(viewModel) {
-                navController.navigate("second")
+                navController.navigate("dialogs")
             }
         }
         composable("second") { navBackStackEntry ->
@@ -60,13 +62,23 @@ fun MyApp() {
             }
             SecondScreen(viewModel)
         }
-        dialog("firstDialog") {
-            FirstDialog {
-                navController.navigate("secondDialog")
+        navigation(startDestination = "firstDialog", route = "dialogs") {
+            dialog("firstDialog") { backStackEntry ->
+                val parentEntry = remember(backStackEntry) {
+                    navController.getBackStackEntry("dialogs")
+                }
+                val dialogsViewModel = hiltViewModel<OtherViewModel>(parentEntry)
+                FirstDialog(dialogsViewModel) {
+                    navController.navigate("secondDialog")
+                }
             }
-        }
-        dialog("secondDialog") {
-            SecondDialog()
+            dialog("secondDialog") { backStackEntry ->
+                val parentEntry = remember(backStackEntry) {
+                    navController.getBackStackEntry("dialogs")
+                }
+                val dialogsViewModel = hiltViewModel<OtherViewModel>(parentEntry)
+                SecondDialog(dialogsViewModel)
+            }
         }
     }
 }
