@@ -25,6 +25,7 @@ import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import ninja.bryansills.daggerscopingdemo.daggerstuff.MegaDialog
 import ninja.bryansills.daggerscopingdemo.ui.theme.DaggerScopingDemoTheme
 
 @AndroidEntryPoint
@@ -55,7 +56,7 @@ fun MyApp() {
                 it.create(10, 5)
             }
             FirstScreen(viewModel) {
-                navController.navigate("dialogs")
+                navController.navigate("megadialog")
             }
         }
         composable("second") { navBackStackEntry ->
@@ -82,6 +83,9 @@ fun MyApp() {
                 val dialogsViewModel = hiltViewModel<OtherViewModel>(parentEntry)
                 SecondDialog(dialogsViewModel)
             }
+        }
+        composable("megadialog") {
+            MegaDialog()
         }
     }
 }
