@@ -29,11 +29,12 @@ jobs:
       - name: Run Unit Tests
         run: ./gradlew check
 
-      - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v4
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
-          report_paths: '**/build/test-results/**/TEST-*.xml'
+          files: |
+            **/build/test-results/**/TEST-*.xml
 
   run_instrumented_tests:
     name: Run Instrumented Tests
@@ -66,8 +67,9 @@ jobs:
           heap-size: 600M
           script: ./gradlew connectedCheck
 
-      - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v4
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
-          report_paths: '**/build/**/androidTest-results/**/TEST-*.xml'
+          files: |
+            **/build/**/androidTest-results/**/TEST-*.xml
