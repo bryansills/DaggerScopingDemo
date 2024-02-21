@@ -11,7 +11,7 @@ import javax.inject.Inject
 class IsEvenUseCase @AssistedInject constructor(
     @Assisted private val counterUseCase: CounterUseCase
 ) {
-    fun invoke(): Flow<Boolean> {
+    operator fun invoke(): Flow<Boolean> {
         return counterUseCase.invoke().map { it % 2 == 0 }
     }
 

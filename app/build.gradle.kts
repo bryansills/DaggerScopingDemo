@@ -45,10 +45,23 @@ android {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
     packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
+        resources.excludes += setOf(
+            // Exclude AndroidX version files
+            "META-INF/*.version",
+            // Exclude consumer proguard files
+            "META-INF/proguard/*",
+            // Exclude the Firebase/Fabric/other random properties files
+            "/*.properties",
+            "fabric/*.properties",
+            "META-INF/*.properties",
+            // License files
+            "LICENSE*",
+            "META-INF/LICENSE*",
+            // Exclude Kotlin unused files
+            "META-INF/**/previous-compilation-data.bin",
+        )
     }
+    testOptions { packaging { jniLibs { useLegacyPackaging = true } } }
 }
 
 dependencies {
@@ -73,4 +86,13 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.6")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0-alpha01")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
+    testImplementation("app.cash.turbine:turbine:1.0.0")
+    testImplementation("io.mockk:mockk:1.13.9")
+
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
+    androidTestImplementation("app.cash.turbine:turbine:1.0.0")
+    androidTestImplementation("io.mockk:mockk-android:1.13.9")
+    androidTestImplementation("io.mockk:mockk-agent:1.13.9")
 }

@@ -1,6 +1,7 @@
 package ninja.bryansills.daggerscopingdemo
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -11,11 +12,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -56,7 +59,7 @@ fun MyApp() {
                 it.create(10, 5)
             }
             FirstScreen(viewModel) {
-                navController.navigate("megadialog")
+                navController.navigate("dialogs")
             }
         }
         composable("second") { navBackStackEntry ->
@@ -93,6 +96,12 @@ fun MyApp() {
 @Composable
 fun FirstScreen(viewModel: FirstViewModel, onNavigate: () -> Unit) {
     val uiState by viewModel.uiState.collectAsState(initial = 0 to true)
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
+    LaunchedEffect(lifecycleState) {
+        Log.d("BLARG", "Lifecycle state now is: ${lifecycleState.name}")
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         Text("Count: ${uiState.first}")

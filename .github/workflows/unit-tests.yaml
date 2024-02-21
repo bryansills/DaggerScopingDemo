@@ -1,0 +1,63 @@
+name: Run unit tests
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  run_tests:
+    name: Run Tests
+    runs-on: ubuntu-latest-16-cores
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: "temurin"
+
+      - uses: gradle/gradle-build-action@v2
+
+      - name: Run Unit Tests
+        run: ./gradlew check
+
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v4
+        if: always()
+        with:
+          report_paths: '**/build/test-results/**/TEST-*.xml'
+
+  run_instrumented_tests:
+    name: Run Tests
+    runs-on: ubuntu-latest-16-cores
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: "temurin"
+
+      - uses: gradle/gradle-build-action@v2
+
+      - name: Run Instrumented Tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          arch: x86_64
+          disable-animations: true
+          disk-size: 6000M
+          heap-size: 600M
+          script: ./gradlew connectedCheck
+
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v4
+        if: always()
+        with:
+          report_paths: '**/build/**/androidTest-results/**/TEST-*.xml'

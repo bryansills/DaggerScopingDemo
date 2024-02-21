@@ -1,3 +1,5 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     id("com.android.application") version "8.2.0" apply false
@@ -5,4 +7,12 @@ plugins {
     id("com.google.devtools.ksp") version "1.9.0-1.0.12" apply false
     id("com.google.dagger.hilt.android") version "2.49" apply false
 
+}
+
+tasks.withType<Test> {
+    testLogging {
+        exceptionFormat = TestExceptionFormat.FULL
+        showStackTraces = true
+        showStandardStreams = true
+    }
 }
