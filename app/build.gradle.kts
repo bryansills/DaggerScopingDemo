@@ -61,7 +61,6 @@ android {
             "META-INF/**/previous-compilation-data.bin",
         )
     }
-    testOptions { packaging { jniLibs { useLegacyPackaging = true } } }
 }
 
 dependencies {
@@ -89,12 +88,9 @@ dependencies {
 
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
     testImplementation("app.cash.turbine:turbine:1.0.0")
-    testImplementation("io.mockk:mockk:1.13.9")
     testImplementation("com.willowtreeapps.assertk:assertk:0.28.0")
 
     androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
     androidTestImplementation("app.cash.turbine:turbine:1.0.0")
-    androidTestImplementation("io.mockk:mockk-android:1.13.9")
-    androidTestImplementation("io.mockk:mockk-agent:1.13.9")
     androidTestImplementation("com.willowtreeapps.assertk:assertk:0.28.0")
 }

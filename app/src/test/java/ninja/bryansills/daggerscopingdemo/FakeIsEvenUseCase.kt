@@ -35,7 +35,7 @@ class FakeIsEvenUseCase {
 
     @Test
     fun failTest() = runTest {
-        create(13)
+        create(14)
 
         isEvenUseCase().test {
             assertThat(awaitItem()).isTrue()

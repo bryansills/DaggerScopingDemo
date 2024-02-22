@@ -35,7 +35,7 @@ class FakeIsEvenUseCase {
 
     @Test
     fun dumbTest() = runTest {
-        create(11)
+        create(12)
 
         isEvenUseCase().test {
             assertThat(awaitItem()).isTrue()
