@@ -32,7 +32,7 @@ jobs:
       - name: Run Unit Tests
         run: ./gradlew check
 
-      - name: Publish Test Results
+      - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
@@ -70,9 +70,10 @@ jobs:
           heap-size: 600M
           script: ./gradlew connectedCheck
 
-      - name: Publish Test Results
+      - name: Publish Instrumented Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
+          check_name: "Check name test"
           files: |
             **/build/**/androidTest-results/**/TEST-*.xml
