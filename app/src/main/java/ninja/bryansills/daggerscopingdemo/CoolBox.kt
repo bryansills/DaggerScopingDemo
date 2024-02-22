@@ -16,7 +16,7 @@ fun CoolBox() {
     Box(
         modifier = Modifier
             .background(Color.LightGray)
-            .size(200.dp)
+            .size(300.dp)
     ) {
         Text(
             text = "This text is on the left",
@@ -25,9 +25,9 @@ fun CoolBox() {
 
         Box(
             modifier = Modifier
-                .background(Color.Green)
+                .background(Color.Yellow)
                 .size(50.dp)
-                .align(Alignment.BottomCenter)
+                .align(Alignment.TopCenter)
         )
 
         Text(
