@@ -1,9 +1,9 @@
 package ninja.bryansills.daggerscopingdemo
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import app.cash.turbine.test
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertTrue
+import assertk.assertThat
+import assertk.assertions.isFalse
+import assertk.assertions.isTrue
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,9 +25,22 @@ class FakeIsEvenUseCase {
         create(10)
 
         isEvenUseCase().test {
-            assertTrue(awaitItem())
+            assertThat(awaitItem()).isTrue()
             counterUseCase.increment()
-            assertFalse(awaitItem())
+            assertThat(awaitItem()).isFalse()
+            ensureAllEventsConsumed()
+            cancel()
+        }
+    }
+
+    @Test
+    fun dumbTest() = runTest {
+        create(12)
+
+        isEvenUseCase().test {
+            assertThat(awaitItem()).isTrue()
+            counterUseCase.increment()
+            assertThat(awaitItem()).isFalse()
             ensureAllEventsConsumed()
             cancel()
         }
