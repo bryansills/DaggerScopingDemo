@@ -35,6 +35,9 @@ jobs:
 
       - uses: gradle/gradle-build-action@v2
 
+      - name: Run Snapshot Tests
+        run: ./gradlew verifyPaparazzi
+
       - name: Run Unit Tests
         run: ./gradlew check
 
