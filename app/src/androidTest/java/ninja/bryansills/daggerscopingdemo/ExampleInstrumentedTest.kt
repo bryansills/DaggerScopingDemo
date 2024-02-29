@@ -17,6 +17,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("ninja.bryansills.fail", appContext.packageName)
+        assertEquals("ninja.bryansills.daggerscopingdemo", appContext.packageName)
     }
 }
