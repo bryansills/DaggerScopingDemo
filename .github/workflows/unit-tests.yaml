@@ -66,3 +66,11 @@ jobs:
           files: |
             **/build/test-results/**/TEST-*.xml
             **/build/**/androidTest-results/**/TEST-*.xml
+
+      - name: Upload Failure Test Reports
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: unit-test-reports
+          path: |
+            **/build/reports/*
