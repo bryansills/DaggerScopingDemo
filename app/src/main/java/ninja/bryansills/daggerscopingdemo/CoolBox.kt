@@ -1,6 +1,7 @@
 package ninja.bryansills.daggerscopingdemo
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
@@ -12,9 +13,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CoolBox() {
+fun CoolBox(modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .background(Color.LightGray)
             .size(300.dp)
     ) {
@@ -38,8 +39,30 @@ fun CoolBox() {
     }
 }
 
+@Composable
+fun CoolBox(customBackground: Color, modifier: Modifier = Modifier) {
+
+}
+
 @Preview
 @Composable
 fun CoolBoxPreview() {
     CoolBox()
+}
+
+@Preview
+@Composable
+fun CoolBoxPreviewTwo() {
+    CoolBox(
+        modifier = Modifier.border(2.dp, Color.Green)
+    )
+}
+
+
+@Preview
+@Composable
+fun CoolBoxPreviewThree() {
+    CoolBox(
+        modifier = Modifier.size(400.dp)
+    )
 }
