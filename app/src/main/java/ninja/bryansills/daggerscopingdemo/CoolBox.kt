@@ -26,7 +26,7 @@ fun CoolBox(modifier: Modifier = Modifier) {
 
         Box(
             modifier = Modifier
-                .background(Color.Yellow)
+                .background(Color.Cyan)
                 .size(50.dp)
                 .align(Alignment.TopCenter)
         )
