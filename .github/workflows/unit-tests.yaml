@@ -15,8 +15,8 @@ permissions:
   pull-requests: write
 
 jobs:
-  init:
-    name: Init before the fun stuff
+  unit_tests:
+    name: Execute all unit tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -31,19 +31,9 @@ jobs:
 
       - uses: gradle/gradle-build-action@v2
 
-  jvm_unit_tests:
-    name: JVM unit tests
-    runs-on: ubuntu-latest
-    needs: [init]
-    steps:
       - name: Run Unit Tests
         run: ./gradlew check
 
-  instrumented_unit_tests:
-    name: JVM unit tests
-    runs-on: ubuntu-latest
-    needs: [init]
-    steps:
       - name: Enable KVM group perms (for Android emulator)
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -61,11 +51,6 @@ jobs:
           heap-size: 600M
           script: ./gradlew connectedCheck
 
-  screenshot_tests:
-    name: Run screenshot tests
-    runs-on: ubuntu-latest
-    needs: [init]
-    steps:
       - name: Make sure Git LFS is tracking all the necessary files
         run: |
           ./.github/scripts/check-git-lfs.sh
@@ -73,12 +58,6 @@ jobs:
       - name: Run Snapshot Tests
         run: ./gradlew verifyPaparazzi
 
-  upload_reports:
-    name: Run screenshot tests
-    runs-on: ubuntu-latest
-    needs: [jvm_unit_tests, instrumented_unit_tests, screenshot_tests]
-    if: ${{ always() }}
-    steps:
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
