@@ -1,5 +1,6 @@
 package ninja.bryansills.daggerscopingdemo
 
+import android.util.Log
 import androidx.compose.ui.unit.IntOffset
 import dagger.Binds
 import dagger.Module
@@ -22,12 +23,16 @@ import javax.inject.Singleton
 //@ViewModelScoped
 // With @AssistedInject you cannot have a scope
 class RealCounterUseCase @AssistedInject constructor(
+    private val timeProvider: TimeProvider,
     @Assisted("counter-initial") initialCount: Int,
     @Assisted("counter-offset") offset: Int,
 ) : CounterUseCase {
     private val count = MutableStateFlow(initialCount + offset)
 
-    override fun invoke(): StateFlow<Int> = count.asStateFlow()
+    override fun invoke(): StateFlow<Int> {
+        Log.d("BRYANS", "current time is: ${timeProvider.now}")
+        return count.asStateFlow()
+    }
 
     override fun increment() {
         count.update { it + 1 }
